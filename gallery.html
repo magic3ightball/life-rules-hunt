@@ -1,0 +1,355 @@
+<title>Life Rules Hunt</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans+KR:wght@400;600;700&display=swap">
+<style>
+/* Layout: one reading column; diagrams sit in quiet panels, live cells are the only saturated colour. */
+:root {
+  --paper: #f3f5f2; --panel: #ffffff; --ink: #1b2421; --mute: #5f6b66; --rule: #d9dfdb;
+  --cell: #0f7b62; --cell-soft: #d5ece4; --new: #c8462b; --new-soft: #f7dfd8; --ship: #2f5fb3;
+  --f-body: "IBM Plex Sans KR", "Apple SD Gothic Neo", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --paper: #121715; --panel: #1a211e; --ink: #e6ece9; --mute: #94a39c; --rule: #2c3531;
+  --cell: #4fd1a8; --cell-soft: #1f3a31; --new: #ff8a6b; --new-soft: #3d221b; --ship: #82a8f0; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --paper: #121715; --panel: #1a211e; --ink: #e6ece9; --mute: #94a39c; --rule: #2c3531;
+  --cell: #4fd1a8; --cell-soft: #1f3a31; --new: #ff8a6b; --new-soft: #3d221b; --ship: #82a8f0; color-scheme: dark }
+* { box-sizing: border-box; }
+body { background: var(--paper); color: var(--ink); font: 16px/1.65 var(--f-body); }
+.wrap { max-width: 1040px; margin: 0 auto; padding-block: 36px 72px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1 { font-size: clamp(28px, 5vw, 40px); line-height: 1.15; margin: 0 0 8px; letter-spacing: -0.01em; }
+h2 { font-size: 22px; margin: 56px 0 6px; text-wrap: balance; }
+h3 { font-size: 17px; margin: 0 0 6px; }
+.lede { color: var(--mute); max-width: 62ch; margin: 0; }
+.eyebrow { font: 600 12px var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--cell); }
+p.note { color: var(--mute); max-width: 65ch; margin: 4px 0 18px; }
+.panel { background: var(--panel); border: 1px solid var(--rule); border-radius: 10px; padding: 18px; min-width: 0; }
+.twocol { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+svg { display: block; width: 100%; height: auto; }
+svg text { font-family: var(--f-body); fill: var(--ink); }
+svg .m { fill: var(--mute); } svg .mono { font-family: var(--f-mono); }
+.scroll { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+th { font-weight: 600; color: var(--mute); font-size: 12px; }
+td.why { white-space: normal; min-width: 220px; }
+.mono { font-family: var(--f-mono); }
+tr.pick td { background: var(--cell-soft); }
+.chip { display: inline-block; font: 600 11px var(--f-mono); padding: 1px 7px; border-radius: 99px; background: var(--rule); color: var(--ink); }
+.chip.new { background: var(--new); color: var(--panel); }
+.chip.ship { background: var(--ship); color: var(--panel); }
+.chip.ok { background: var(--cell-soft); color: var(--cell); }
+.emit { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 10px; margin-top: 10px; }
+.emit .card { gap: 4px; }
+.emit button { align-self: flex-start; font-size: 13px; padding: 5px 10px; }
+/* live soup */
+.demo { display: grid; grid-template-columns: minmax(0, 1fr) minmax(240px, 300px); gap: 18px; align-items: start; }
+@media (max-width: 720px) { .demo { grid-template-columns: 1fr; } }
+#soup { width: 100%; max-width: 100%; aspect-ratio: 1; border-radius: 8px; background: var(--paper); display: block; }
+.controls { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+select, button { font: 14px var(--f-body); padding: 7px 12px; border-radius: 7px; border: 1px solid var(--rule); background: var(--panel); color: var(--ink); cursor: pointer; }
+button.primary { background: var(--cell); border-color: var(--cell); color: var(--panel); font-weight: 600; }
+button:focus-visible, select:focus-visible, a:focus-visible { outline: 2px solid var(--ship); outline-offset: 2px; }
+.readout { display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; font-size: 14px; }
+.readout dt { color: var(--mute); } .readout dd { margin: 0; font-family: var(--f-mono); }
+.status { margin-top: 12px; padding: 10px 12px; border-radius: 8px; background: var(--cell-soft); font-size: 14px; }
+/* results */
+.rule-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 16px; margin: 40px 0 10px; }
+.rule-head h3 { font: 600 20px var(--f-mono); margin: 0; }
+.stats { display: flex; flex-wrap: wrap; gap: 6px 18px; color: var(--mute); font-size: 14px; }
+.stats b { color: var(--ink); font-variant-numeric: tabular-nums; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+.card { background: var(--panel); border: 1px solid var(--rule); border-radius: 10px; padding: 10px; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+.card.new { border-color: var(--new); }
+.card canvas { width: 100%; max-width: 100%; aspect-ratio: 1; display: block; border-radius: 6px; background: var(--paper); }
+.card .code { font: 11px var(--f-mono); color: var(--mute); word-break: break-all; }
+.card .meta { font-size: 13px; }
+a { color: var(--ship); }
+.pending { color: var(--mute); font-style: italic; }
+footer { margin-top: 60px; color: var(--mute); font-size: 13px; max-width: 70ch; }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+</style>
+
+<div class="wrap">
+<div class="eyebrow">Life-like 세포 자동자 · 새 패턴 찾기</div>
+<h1>Life Rules Hunt</h1>
+<p class="lede">콘웨이의 생명 게임과 같은 방식으로 움직이지만 규칙 숫자만 다른 세계가 26만 개 있습니다. 그중 아직 아무도 많이 뒤져 보지 않은 세계를 골라, 무작위 수프 수백만 개를 돌려서 전 세계 기록(Catagolue)에 없는 물체를 찾습니다.</p>
+
+<h2>규칙 이름 읽는 법</h2>
+<p class="note">모든 칸은 이웃 8칸을 셉니다. <b>B</b> 뒤 숫자는 빈 칸이 태어나는 이웃 수, <b>S</b> 뒤 숫자는 산 칸이 살아남는 이웃 수입니다. 아래는 이번에 고른 규칙 b368s238의 예입니다.</p>
+<div class="panel scroll"><svg viewBox="0 0 820 250" role="img" aria-label="규칙 표기법 그림" style="min-width:620px"><text x="95" y="22" text-anchor="middle" font-size="15" font-weight="600">빈 칸 + 이웃 3</text><rect x="20" y="36" width="46" height="46" rx="5" fill="var(--cell)" stroke="var(--rule)" stroke-width="1"/><rect x="70" y="36" width="46" height="46" rx="5" fill="var(--paper)" stroke="var(--rule)" stroke-width="1"/><rect x="120" y="36" width="46" height="46" rx="5" fill="var(--cell)" stroke="var(--rule)" stroke-width="1"/><rect x="20" y="86" width="46" height="46" rx="5" fill="var(--paper)" stroke="var(--rule)" stroke-width="1"/><rect x="70" y="86" width="46" height="46" rx="5" fill="var(--paper)" stroke="var(--ink)" stroke-width="2.5"/><rect x="120" y="86" width="46" height="46" rx="5" fill="var(--paper)" stroke="var(--rule)" stroke-width="1"/><rect x="20" y="136" width="46" height="46" rx="5" fill="var(--paper)" stroke="var(--rule)" stroke-width="1"/><rect x="70" y="136" width="46" height="46" rx="5" fill="var(--cell)" stroke="var(--rule)" stroke-width="1"/><rect x="120" y="136" width="46" height="46" rx="5" fill="var(--paper)" stroke="var(--rule)" stroke-width="1"/><text x="95" y="212" text-anchor="middle" font-size="14" class="m">이웃 3칸</text><text x="95" y="236" text-anchor="middle" font-size="15" font-weight="600" fill="var(--cell)" style="fill:var(--cell)">B3 → 태어남</text><text x="295" y="22" text-anchor="middle" font-size="15" font-weight="600">산 칸 + 이웃 2</text><rect x="220" y="36" width="46" height="46" rx="5" fill="var(--paper)" stroke="var(--rule)" stroke-width="1"/><rect x="270" y="36" width="46" height="46" rx="5" fill="var(--paper)" stroke="var(--rule)" stroke-width="1"/><rect x="320" y="36" width="46" height="46" rx="5" fill="var(--paper)" stroke="var(--rule)" stroke-width="1"/><rect x="220" y="86" width="46" height="46" rx="5" fill="var(--cell)" stroke="var(--rule)" stroke-width="1"/><rect x="270" y="86" width="46" height="46" rx="5" fill="var(--cell)" stroke="var(--ink)" stroke-width="2.5"/><rect x="320" y="86" width="46" height="46" rx="5" fill="var(--paper)" stroke="var(--rule)" stroke-width="1"/><rect x="220" y="136" width="46" height="46" rx="5" fill="var(--paper)" stroke="var(--rule)" stroke-width="1"/><rect x="270" y="136" width="46" height="46" rx="5" fill="var(--paper)" stroke="var(--rule)" stroke-width="1"/><rect x="320" y="136" width="46" height="46" rx="5" fill="var(--cell)" stroke="var(--rule)" stroke-width="1"/><text x="295" y="212" text-anchor="middle" font-size="14" class="m">이웃 2칸</text><text x="295" y="236" text-anchor="middle" font-size="15" font-weight="600" fill="var(--cell)" style="fill:var(--cell)">S2 → 살아남음</text><text x="495" y="22" text-anchor="middle" font-size="15" font-weight="600">산 칸 + 이웃 4</text><rect x="420" y="36" width="46" height="46" rx="5" fill="var(--cell)" stroke="var(--rule)" stroke-width="1"/><rect x="470" y="36" width="46" height="46" rx="5" fill="var(--cell)" stroke="var(--rule)" stroke-width="1"/><rect x="520" y="36" width="46" height="46" rx="5" fill="var(--cell)" stroke="var(--rule)" stroke-width="1"/><rect x="420" y="86" width="46" height="46" rx="5" fill="var(--paper)" stroke="var(--rule)" stroke-width="1"/><rect x="470" y="86" width="46" height="46" rx="5" fill="var(--cell)" stroke="var(--ink)" stroke-width="2.5"/><rect x="520" y="86" width="46" height="46" rx="5" fill="var(--paper)" stroke="var(--rule)" stroke-width="1"/><rect x="420" y="136" width="46" height="46" rx="5" fill="var(--cell)" stroke="var(--rule)" stroke-width="1"/><rect x="470" y="136" width="46" height="46" rx="5" fill="var(--paper)" stroke="var(--rule)" stroke-width="1"/><rect x="520" y="136" width="46" height="46" rx="5" fill="var(--paper)" stroke="var(--rule)" stroke-width="1"/><text x="495" y="212" text-anchor="middle" font-size="14" class="m">이웃 4칸</text><text x="495" y="236" text-anchor="middle" font-size="15" font-weight="600" fill="var(--new)" style="fill:var(--new)">S에 4 없음 → 죽음</text><text x="620" y="70" font-size="15" class="mono" font-weight="600">b368s238</text><text x="620" y="96" font-size="13" class="m">태어남: 이웃 3, 6, 8</text><text x="620" y="118" font-size="13" class="m">살아남음: 이웃 2, 3, 8</text><text x="620" y="150" font-size="13" class="m">생명 게임 = b3s23</text><text x="620" y="172" font-size="13" class="m">B·S에 0~8을 골라 넣음: 2¹⁸개</text><text x="620" y="194" font-size="13" class="m">B0·B1 빼면 6만 5천 개</text></svg></div>
+
+<h2>찾는 과정</h2>
+<p class="note">두 단계입니다. 먼저 어느 규칙을 뒤질지 고르고(1), 고른 규칙에서 수프를 대량으로 돌립니다(2~5).</p>
+<div class="panel scroll"><svg viewBox="0 0 820 560" role="img" aria-label="검색 과정 그림" style="min-width:560px"><defs><marker id="ar" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--mute)"/></marker></defs><rect x="10" y="10" width="800" height="84" rx="10" fill="var(--cell-soft)" stroke="var(--rule)"/><circle cx="52" cy="52" r="20" fill="var(--cell)"/><text x="52" y="58" text-anchor="middle" font-size="17" font-weight="700" style="fill:var(--panel)">1</text><text x="92" y="42" font-size="17" font-weight="600">규칙 고르기</text><text x="92" y="66" font-size="14" class="m">1만 6천 규칙 × 수프 12~100개</text><text x="92" y="85" font-size="13" class="m">폭발·덩어리 규칙 제외, Catagolue 기록 수 조회</text><line x1="52" y1="96" x2="52" y2="116" stroke="var(--mute)" stroke-width="2" marker-end="url(#ar)"/><rect x="10" y="120" width="800" height="84" rx="10" fill="var(--panel)" stroke="var(--rule)"/><circle cx="52" cy="162" r="20" fill="var(--cell)"/><text x="52" y="168" text-anchor="middle" font-size="17" font-weight="700" style="fill:var(--panel)">2</text><text x="92" y="152" font-size="17" font-weight="600">수프 만들기</text><text x="92" y="176" font-size="14" class="m">'lrh_b368s238_1020_' + 번호 → SHA-256</text><text x="92" y="195" font-size="13" class="m">256비트 = 16×16 칸. Catagolue와 같은 방식</text><line x1="52" y1="206" x2="52" y2="226" stroke="var(--mute)" stroke-width="2" marker-end="url(#ar)"/><rect x="10" y="230" width="800" height="84" rx="10" fill="var(--panel)" stroke="var(--rule)"/><circle cx="52" cy="272" r="20" fill="var(--cell)"/><text x="52" y="278" text-anchor="middle" font-size="17" font-weight="700" style="fill:var(--panel)">3</text><text x="92" y="262" font-size="17" font-weight="600">안정될 때까지 돌리기 (C)</text><text x="92" y="286" font-size="14" class="m">세대마다 상태 해시를 기록</text><text x="92" y="305" font-size="13" class="m">같은 해시가 다시 나오면 주기 발견. 반경 80 밖 물체는 떼어 냄</text><line x1="52" y1="316" x2="52" y2="336" stroke="var(--mute)" stroke-width="2" marker-end="url(#ar)"/><rect x="10" y="340" width="800" height="84" rx="10" fill="var(--panel)" stroke="var(--rule)"/><circle cx="52" cy="382" r="20" fill="var(--cell)"/><text x="52" y="388" text-anchor="middle" font-size="17" font-weight="700" style="fill:var(--panel)">4</text><text x="92" y="372" font-size="17" font-weight="600">물체 나누고 이름 붙이기</text><text x="92" y="396" font-size="14" class="m">붙어 있기만 한 두 물체는 모든 나누는 방법을 시험해 분리</text><text x="92" y="415" font-size="13" class="m">apgcode: xs=정물 xp=진동자 xq=우주선 + 모양 코드</text><line x1="52" y1="426" x2="52" y2="446" stroke="var(--mute)" stroke-width="2" marker-end="url(#ar)"/><rect x="10" y="450" width="800" height="84" rx="10" fill="var(--panel)" stroke="var(--rule)"/><circle cx="52" cy="492" r="20" fill="var(--cell)"/><text x="52" y="498" text-anchor="middle" font-size="17" font-weight="700" style="fill:var(--panel)">5</text><text x="92" y="482" font-size="17" font-weight="600">Catagolue와 대조</text><text x="92" y="506" font-size="14" class="m">그 규칙의 전체 집계표를 내려받아 비교</text><text x="92" y="525" font-size="13" class="m">집계표에 없으면 '처음 보는 물체'</text><text x="800" y="552" text-anchor="end" font-size="12" class="m">2~5를 규칙마다 수프 100만 개씩, 10코어 병렬</text></svg></div>
+
+<h2>규칙 고르기: 1만 6천 개에서 3개로</h2>
+<p class="note">생명 게임과 가까운 규칙(B3 포함, B2 없음) 16,384개를 전부 돌려 걸렀습니다. 막대 길이는 로그 눈금입니다.</p>
+<div class="twocol">
+  <div class="panel scroll"><svg viewBox="0 0 520 300" role="img" aria-label="규칙 거르기 깔때기" style="min-width:420px"><text x="0" y="34" font-size="14">검사한 규칙</text><rect x="150" y="18" width="300.0" height="24" rx="4" fill="var(--cell)" opacity="1.00"/><text x="458.0" y="35" font-size="14" class="mono" font-weight="600">16,384</text><text x="0" y="80" font-size="14">폭발 안 함</text><rect x="150" y="64" width="257.6" height="24" rx="4" fill="var(--cell)" opacity="0.90"/><text x="415.6" y="81" font-size="14" class="mono" font-weight="600">4,161</text><text x="0" y="126" font-size="14">물체가 잘 나뉨</text><rect x="150" y="110" width="255.5" height="24" rx="4" fill="var(--cell)" opacity="0.80"/><text x="413.5" y="127" font-size="14" class="mono" font-weight="600">3,880</text><text x="0" y="172" font-size="14">우주선이 나옴</text><rect x="150" y="156" width="89.4" height="24" rx="4" fill="var(--cell)" opacity="0.70"/><text x="247.4" y="173" font-size="14" class="mono" font-weight="600">18</text><text x="0" y="218" font-size="14">Catagolue 기록 0</text><rect x="150" y="202" width="67.9" height="24" rx="4" fill="var(--cell)" opacity="0.60"/><text x="225.9" y="219" font-size="14" class="mono" font-weight="600">9</text><text x="0" y="264" font-size="14">검색에 고름</text><rect x="150" y="248" width="34.0" height="24" rx="4" fill="var(--cell)" opacity="0.50"/><text x="192.0" y="265" font-size="14" class="mono" font-weight="600">3</text></svg></div>
+  <div class="panel">
+    <h3>거르는 기준</h3>
+    <dl class="readout">
+      <dt>폭발</dt><dd>수프가 끝없이 커지면 제외</dd>
+      <dt>덩어리</dt><dd>잿더미가 40칸 넘는 한 덩어리면 제외</dd>
+      <dt>재미</dt><dd>우주선·긴 주기 진동자가 많을수록 +</dd>
+      <dt>속도</dt><dd>초당 수프 수가 많을수록 +</dd>
+      <dt>새로움</dt><dd>Catagolue C1 수프 수가 적을수록 +</dd>
+    </dl>
+    <p class="note" style="margin-top:12px">안정적인 B3 규칙은 대부분 누군가 이미 약 100만 수프씩 돌려 두었습니다. 기록이 0인 규칙은 조회한 600여 개 중 9개뿐이었고, 그중 8개가 S0(외톨이 칸이 살아남음) 규칙이었습니다.</p>
+  </div>
+</div>
+
+<h3 style="margin-top:28px">고른 규칙과 우주선이 나오는 규칙</h3>
+<div class="panel scroll"><table><thead><tr><th>규칙</th><th>Catagolue C1 수프</th><th>우주선/수프</th><th>주기≥3 잿더미</th><th>물체/수프</th><th>수프/초</th><th>폭발</th><th>고른 이유</th></tr></thead><tbody><tr class="pick"><td class="mono">b368s238</td><td>10,289,463</td><td>0.97</td><td>1%</td><td>8.8</td><td>49</td><td>0%</td><td class="why">우주선(글라이더)이 수프당 약 1개씩 나오는 규칙 중 Catagolue 기록이 가장 적음</td></tr><tr class="pick"><td class="mono">b3578s1267</td><td>245,643</td><td>0.00</td><td>15%</td><td>4.3</td><td>9,967</td><td>0%</td><td class="why">수프 4개 중 1개꼴로 주기 12 진동자가 남고, 기록이 25만 수프뿐</td></tr><tr class="pick"><td class="mono">b36s034678</td><td>0</td><td>0.00</td><td>40%</td><td>4.8</td><td>4,901</td><td>0%</td><td class="why">Catagolue C1 기록 0. 잿더미의 40%가 주기 3 이상</td></tr><tr class=""><td class="mono">b38s238</td><td>44,197,887,374</td><td>2.56</td><td>0%</td><td>17.3</td><td>10</td><td>0%</td><td class="why">우주선이 나오는 안정 규칙</td></tr><tr class=""><td class="mono">b3s23</td><td>338,979,238,610,263</td><td>2.46</td><td>0%</td><td>18.8</td><td>9</td><td>0%</td><td class="why">우주선이 나오는 안정 규칙</td></tr><tr class=""><td class="mono">b368s23</td><td>24,297,538</td><td>0.81</td><td>0%</td><td>8.0</td><td>22</td><td>2%</td><td class="why">우주선이 나오는 안정 규칙</td></tr><tr class=""><td class="mono">b36s238</td><td>21,140,170</td><td>0.64</td><td>0%</td><td>7.2</td><td>22</td><td>1%</td><td class="why">우주선이 나오는 안정 규칙</td></tr><tr class=""><td class="mono">b36s23</td><td>1,891,553,700</td><td>0.54</td><td>0%</td><td>6.1</td><td>97</td><td>0%</td><td class="why">우주선이 나오는 안정 규칙</td></tr><tr class=""><td class="mono">b36s024578</td><td>13,424,559</td><td>0.04</td><td>13%</td><td>2.2</td><td>583</td><td>0%</td><td class="why">우주선이 나오는 안정 규칙</td></tr><tr class=""><td class="mono">b36s02458</td><td>360,000,000</td><td>0.04</td><td>6%</td><td>2.0</td><td>1,698</td><td>0%</td><td class="why">우주선이 나오는 안정 규칙</td></tr><tr class=""><td class="mono">b36s0245</td><td>10,561,508,530</td><td>0.04</td><td>14%</td><td>2.4</td><td>1,334</td><td>0%</td><td class="why">우주선이 나오는 안정 규칙</td></tr><tr class=""><td class="mono">b38s1358</td><td>66,570,300</td><td>0.03</td><td>7%</td><td>3.3</td><td>5,616</td><td>0%</td><td class="why">우주선이 나오는 안정 규칙</td></tr><tr class=""><td class="mono">b368s024578</td><td>12,807,707</td><td>0.03</td><td>12%</td><td>2.1</td><td>1,444</td><td>0%</td><td class="why">우주선이 나오는 안정 규칙</td></tr><tr class=""><td class="mono">b368s02458</td><td>181,100,749</td><td>0.03</td><td>11%</td><td>2.4</td><td>1,427</td><td>0%</td><td class="why">우주선이 나오는 안정 규칙</td></tr><tr class=""><td class="mono">b36s02457</td><td>193,343,483</td><td>0.03</td><td>18%</td><td>2.1</td><td>1,407</td><td>0%</td><td class="why">우주선이 나오는 안정 규칙</td></tr><tr class=""><td class="mono">b3s245</td><td>1,056,404,837</td><td>0.03</td><td>17%</td><td>0.6</td><td>8,586</td><td>0%</td><td class="why">우주선이 나오는 안정 규칙</td></tr><tr class=""><td class="mono">b3678s3468</td><td>950,000,000</td><td>0.03</td><td>28%</td><td>0.4</td><td>3,861</td><td>0%</td><td class="why">우주선이 나오는 안정 규칙</td></tr><tr class=""><td class="mono">b3s2458</td><td>19,899,611,748</td><td>0.03</td><td>14%</td><td>0.6</td><td>5,714</td><td>0%</td><td class="why">우주선이 나오는 안정 규칙</td></tr><tr class=""><td class="mono">b36s2458</td><td>26,236,883,300</td><td>0.03</td><td>15%</td><td>0.5</td><td>2,175</td><td>0%</td><td class="why">우주선이 나오는 안정 규칙</td></tr><tr class=""><td class="mono">b368s245</td><td>92,731,664,760</td><td>0.03</td><td>13%</td><td>0.5</td><td>1,828</td><td>0%</td><td class="why">우주선이 나오는 안정 규칙</td></tr></tbody></table></div>
+
+<h2>수프 하나 직접 돌려 보기</h2>
+<p class="note">검색이 실제로 하는 일과 같습니다. 문자열을 SHA-256으로 바꿔 16×16 수프를 만들고, 반복될 때까지 돌립니다. 점선 원 밖으로 나간 물체는 우주선으로 보고 떼어 냅니다.</p>
+<div class="panel demo">
+  <canvas id="soup" width="640" height="640" aria-label="수프 시뮬레이션"></canvas>
+  <div>
+    <div class="controls">
+      <select id="demo-rule" aria-label="규칙"><option value="b368s238">b368s238</option><option value="b3578s1267">b3578s1267</option><option value="b36s034678">b36s034678</option></select>
+      <select id="demo-seed" aria-label="수프 번호"></select>
+    </div>
+    <div class="controls">
+      <button id="demo-play" class="primary">재생</button>
+      <button id="demo-step">한 세대</button>
+      <button id="demo-reset">처음으로</button>
+    </div>
+    <dl class="readout">
+      <dt>시드</dt><dd id="r-seed">-</dd>
+      <dt>세대</dt><dd id="r-gen">0</dd>
+      <dt>살아 있는 칸</dt><dd id="r-pop">0</dd>
+      <dt>떼어 낸 우주선 칸</dt><dd id="r-ship">0</dd>
+    </dl>
+    <div class="status" id="r-status">재생을 누르세요.</div>
+    <p class="note" style="font-size:13px;margin-top:10px">같은 시드는 <a id="r-link" href="#" target="_blank" rel="noopener">Catagolue의 hashsoup</a>에서도 똑같은 수프로 나옵니다.</p>
+  </div>
+</div>
+
+<h2>검색 결과</h2>
+<p class="note">Catagolue 기록이 <b>3회 미만</b>인 물체만 보여 줍니다. <span class="chip new">처음</span>은 그 규칙의 Catagolue 기록에 없는 물체, <span class="chip ship">우주선</span>은 움직이는 물체입니다. <span class="chip ok">단일 물체</span>는 두 조각으로 나누는 모든 방법을 시험해 봐도 따로 살아남는 조각이 없다는 뜻입니다(붙어 있기만 한 두 물체가 아님). 우주선 → 주기 3 이상 진동자 → 나머지 순서이고, 규칙당 최대 30개까지 보입니다.</p>
+<div id="results"></div>
+
+<footer>
+<p>검색 엔진: C로 만든 수프 실행기 + Python 물체 분리기(apgsearch의 C1 hashsoup 방식과 호환). Catagolue에는 아무것도 올리지 않았습니다. "처음"은 Catagolue 기록과 대조한 결과이며, 물체 분리 방식이 apgsearch와 조금 달라 붙어 있는 두 물체가 하나로 잡힌 경우가 섞일 수 있습니다. 원본 수프 링크로 확인할 수 있습니다.</p>
+<p>생성: 2026-10-20</p>
+</footer>
+</div>
+
+<script>
+const DATA = {"runs":[{"rule":"b368s238","soups":1000000,"distinct":122,"unstable":5755,"new_total":9,"ship_kinds":4,"census_soups":10289463,"note":"","items":[{"code":"xs17_0bt069a4z32","count":1,"census":0,"soup":"lrh_b368s238_1020_14236","cells":[[6,-1],[7,-2],[7,0],[8,-3],[8,0],[9,-2],[9,-1],[11,-3],[11,-1],[11,0],[11,1],[12,-3],[12,-2],[12,0],[12,3],[13,2],[13,3]],"verdict":"strict","how":"exhaustive"},{"code":"xs16_25b8ob96","count":1,"census":0,"soup":"lrh_b368s238_1020_174488","cells":[[-4,6],[-3,5],[-3,7],[-2,5],[-2,6],[-2,8],[-1,8],[0,8],[0,9],[1,5],[1,6],[1,8],[2,5],[2,8],[3,6],[3,7]],"verdict":"strict","how":"exhaustive"},{"code":"xs15_2llicz56","count":1,"census":0,"soup":"lrh_b368s238_1020_357132","cells":[[6,22],[6,23],[7,21],[7,24],[8,20],[8,22],[8,24],[9,20],[9,22],[9,24],[9,26],[9,27],[10,21],[10,25],[10,27]],"verdict":"strict","how":"exhaustive"},{"code":"xs15_8e1qczx1252","count":1,"census":0,"soup":"lrh_b368s238_1020_610465","cells":[[29,13],[30,12],[30,14],[31,13],[31,16],[31,17],[32,14],[32,15],[32,16],[32,18],[33,19],[34,16],[34,17],[34,18],[35,16]],"verdict":"strict","how":"exhaustive"},{"code":"xs15_cilmzx652","count":1,"census":0,"soup":"lrh_b368s238_1020_630462","cells":[[7,6],[8,5],[8,7],[9,1],[9,2],[9,4],[9,6],[9,7],[10,0],[10,2],[10,4],[11,1],[11,4],[12,2],[12,3]],"verdict":"strict","how":"exhaustive"},{"code":"xs15_wgil96z652","count":1,"census":0,"soup":"lrh_b368s238_1020_811716","cells":[[-9,14],[-9,15],[-8,14],[-8,16],[-7,15],[-6,16],[-6,17],[-6,18],[-5,19],[-4,18],[-4,20],[-3,17],[-3,20],[-2,18],[-2,19]],"verdict":"strict","how":"exhaustive"},{"code":"xs14_dbgzmq1","count":1,"census":0,"soup":"lrh_b368s238_1020_36151","cells":[[8,49],[8,50],[9,49],[10,50],[11,49],[11,50],[12,48],[13,48],[14,49],[14,50],[15,50],[16,49],[17,49],[17,50]],"verdict":"strict","how":"exhaustive"},{"code":"xs14_wggm96z652","count":1,"census":0,"soup":"lrh_b368s238_1020_630823","cells":[[-12,17],[-12,18],[-11,16],[-11,19],[-10,15],[-10,17],[-10,18],[-9,15],[-8,13],[-8,15],[-7,12],[-7,14],[-6,12],[-6,13]],"verdict":"strict","how":"exhaustive"},{"code":"xp2_5t5z555","count":1,"census":0,"soup":"lrh_b368s238_1020_254799","cells":[[6,25],[6,28],[7,22],[7,23],[7,24],[7,25],[7,28],[7,29],[7,30],[7,31],[8,25],[8,28]],"verdict":"strict","how":"exhaustive"},{"code":"xs18_c4o0ehrz321","count":1,"census":2,"soup":"lrh_b368s238_1020_855064","cells":[[-14,-2],[-14,-1],[-13,-2],[-13,0],[-12,0],[-12,3],[-12,4],[-11,-2],[-11,0],[-11,2],[-11,4],[-10,-2],[-10,-1],[-10,2],[-9,2],[-9,4],[-8,3],[-8,4]]},{"code":"xs16_wg0si96z2543","count":1,"census":1,"soup":"lrh_b368s238_1020_457311","cells":[[56,-15],[57,-16],[57,-14],[58,-17],[58,-14],[59,-17],[59,-15],[60,-19],[60,-17],[60,-16],[61,-20],[61,-18],[62,-21],[62,-18],[63,-20],[63,-19]]},{"code":"xs15_69d2cga6","count":1,"census":1,"soup":"lrh_b368s238_1020_692102","cells":[[23,7],[23,8],[24,6],[24,9],[25,6],[25,7],[25,9],[26,8],[27,6],[27,7],[28,5],[29,6],[29,8],[30,7],[30,8]]},{"code":"xs14_08o69a4z321","count":1,"census":1,"soup":"lrh_b368s238_1020_657376","cells":[[-18,63],[-18,64],[-17,62],[-17,64],[-16,62],[-15,59],[-15,60],[-15,62],[-15,63],[-14,58],[-14,61],[-13,59],[-13,61],[-12,60]]},{"code":"xs13_0gbaicz121","count":1,"census":1,"soup":"lrh_b368s238_1020_559766","cells":[[0,-12],[1,-13],[1,-11],[2,-12],[2,-10],[2,-8],[2,-7],[3,-10],[3,-8],[4,-11],[4,-8],[5,-10],[5,-9]]},{"code":"xs12_69iczx113","count":1,"census":1,"soup":"lrh_b368s238_1020_946002","cells":[[-2,10],[-2,11],[-1,10],[0,7],[0,8],[0,10],[1,6],[1,9],[2,5],[2,8],[3,6],[3,7]]},{"code":"xs11_0cp3z65","count":1,"census":2,"soup":"lrh_b368s238_1020_329370","cells":[[8,20],[8,21],[9,17],[9,18],[9,21],[10,14],[10,16],[10,18],[10,19],[11,14],[11,15]]}],"recheck":{"soups":5755,"kinds":{"unsettled":1999,"settled":3051,"emitter":705},"catagolue_linear":1017314},"emitters":[{"soup":"lrh_b368s238_1020_233344","ejections":105,"big_ejections":90,"emit_period":96,"gen":15001,"n_same":276},{"soup":"lrh_b368s238_1020_755803","ejections":171,"big_ejections":136,"emit_period":48,"gen":14500,"n_same":256},{"soup":"lrh_b368s238_1020_85065","ejections":48,"big_ejections":40,"emit_period":192,"gen":15001,"n_same":65},{"soup":"lrh_b368s238_1020_676070","ejections":32,"big_ejections":29,"emit_period":384,"gen":15001,"n_same":29},{"soup":"lrh_b368s238_1020_968213","ejections":203,"big_ejections":12,"emit_period":24,"gen":11191,"n_same":9},{"soup":"lrh_b368s238_1020_305170","ejections":10,"big_ejections":10,"emit_period":768,"gen":15001,"n_same":8}]},{"rule":"b3578s1267","soups":1000000,"distinct":43,"unstable":0,"new_total":9,"ship_kinds":1,"census_soups":245643,"note":"","items":[{"code":"xs12_g0s0s16z12","count":1,"census":0,"soup":"lrh_b3578s1267_1020_810923","cells":[[2,2],[3,1],[4,1],[4,3],[4,5],[5,3],[5,5],[6,3],[6,5],[6,7],[7,7],[8,6]],"verdict":"strict","how":"exhaustive"},{"code":"xs10_21e0eg8","count":1,"census":0,"soup":"lrh_b3578s1267_1020_185016","cells":[[14,14],[15,11],[15,13],[15,15],[16,11],[16,13],[17,9],[17,11],[17,13],[18,10]],"verdict":"strict","how":"exhaustive"},{"code":"xs10_0m1cz342","count":1,"census":0,"soup":"lrh_b3578s1267_1020_226872","cells":[[3,11],[4,10],[4,12],[5,12],[6,11],[7,9],[8,9],[8,11],[9,11],[10,10]],"verdict":"strict","how":"exhaustive"},{"code":"xp2_21f0f12","count":1,"census":0,"soup":"lrh_b3578s1267_1020_422923","cells":[[10,2],[11,2],[12,1],[12,3],[12,4],[14,1],[14,3],[14,4],[15,2],[16,2]],"verdict":"strict","how":"exhaustive"},{"code":"xs10_21e0e12","count":1,"census":0,"soup":"lrh_b3578s1267_1020_731997","cells":[[-3,15],[-2,16],[-1,13],[-1,14],[-1,15],[1,13],[1,14],[1,15],[2,16],[3,15]],"verdict":"strict","how":"exhaustive"},{"code":"xs9_2154k8zx1","count":1,"census":0,"soup":"lrh_b3578s1267_1020_968761","cells":[[-7,3],[-6,2],[-5,2],[-5,4],[-4,4],[-4,7],[-3,4],[-3,6],[-2,5]],"verdict":"strict","how":"exhaustive"},{"code":"xs7_0m1cz1","count":1,"census":0,"soup":"lrh_b3578s1267_1020_169614","cells":[[9,3],[10,2],[11,2],[11,4],[12,4],[13,2],[14,1]],"verdict":"strict","how":"exhaustive"},{"code":"xs8_215a84","count":2,"census":0,"soup":"lrh_b3578s1267_1020_839823","cells":[[0,2],[1,1],[2,1],[2,3],[3,2],[3,4],[4,4],[5,3]],"verdict":"strict","how":"exhaustive"},{"code":"xs9_06hcz32","count":3,"census":0,"soup":"lrh_b3578s1267_1020_164321","cells":[[2,0],[2,1],[3,-4],[3,-3],[3,1],[4,-5],[4,-1],[5,-3],[5,-2]],"verdict":"strict","how":"exhaustive"},{"code":"xp10_699996","count":7,"census":1,"soup":"lrh_b3578s1267_1020_104933","cells":[[10,2],[10,5],[12,1],[12,3],[12,4],[12,6],[13,1],[13,3],[13,4],[13,6],[15,2],[15,5]]},{"code":"xp12_3w29q","count":15,"census":2,"soup":"lrh_b3578s1267_1020_148165","cells":[[1,10],[2,11],[3,11],[4,10],[4,11],[4,12],[4,15],[5,15]]},{"code":"xs9_2154kg8","count":1,"census":1,"soup":"lrh_b3578s1267_1020_268705","cells":[[-1,9],[0,8],[1,8],[1,10],[2,10],[3,10],[3,12],[4,12],[5,11]]},{"code":"xs9_254kg84","count":1,"census":1,"soup":"lrh_b3578s1267_1020_270238","cells":[[14,13],[15,12],[16,13],[16,14],[16,15],[16,18],[17,17],[18,15],[18,16]]},{"code":"xs9_m1qz12","count":4,"census":1,"soup":"lrh_b3578s1267_1020_27476","cells":[[7,-1],[8,-2],[9,-2],[9,0],[10,0],[11,-2],[12,-2],[12,0],[13,-1]]},{"code":"xs8_215413","count":5,"census":2,"soup":"lrh_b3578s1267_1020_110235","cells":[[1,11],[1,12],[2,11],[3,13],[4,11],[4,13],[5,11],[6,12]]},{"code":"xp2_248nme","count":6,"census":1,"soup":"lrh_b3578s1267_1020_123017","cells":[[-6,2],[-5,1],[-5,5],[-4,-1],[-4,1],[-4,4],[-3,2],[-2,1],[-2,2]]}],"recheck":null,"emitters":[]},{"rule":"b36s034678","soups":1000000,"distinct":209,"unstable":0,"new_total":209,"ship_kinds":0,"census_soups":0,"note":"\uc774 \uaddc\uce59\uc740 Catagolue C1 \uae30\ub85d\uc774 0\uc774\ub77c \ub098\uc628 \ubb3c\uccb4\uac00 \uc804\ubd80 '\ucc98\uc74c'\uc785\ub2c8\ub2e4. \ud754\ud55c \ubb3c\uccb4\uae4c\uc9c0 \ub2e4 \ubcf4\uc774\uc9c0 \uc54a\ub3c4\ub85d \uc6b0\uc8fc\uc120\uacfc \uc8fc\uae30 3 \uc774\uc0c1 \uc9c4\ub3d9\uc790\ub97c \uba3c\uc800, \uc774\ubc88 \uac80\uc0c9\uc5d0\uc11c \ub4dc\ubb3c\uac8c \ub098\uc628 \uc21c\uc73c\ub85c \ubcf4\uc5ec \uc90d\ub2c8\ub2e4.","items":[{"code":"xp18_0ouuv5iz3315","count":1,"census":0,"soup":"lrh_b36s034678_1020_586324","cells":[[11,10],[11,11],[12,8],[12,9],[12,10],[12,11],[13,6],[13,7],[13,8],[13,9],[13,10],[13,11],[13,12],[14,6],[14,7],[14,8],[14,9],[14,10],[14,11],[14,12],[15,5],[15,6],[15,7],[15,8],[15,9],[16,5],[16,7],[16,8],[16,9],[17,6],[17,8],[17,9]],"verdict":"strict","how":"partial"},{"code":"xp4_4fhjkszx1","count":1,"census":0,"soup":"lrh_b36s034678_1020_830974","cells":[[12,1],[12,2],[12,3],[13,1],[13,3],[14,-1],[14,0],[14,3],[14,4],[15,-1],[15,3],[16,-1],[16,0],[16,1],[16,2],[17,1]],"verdict":"strict","how":"exhaustive"},{"code":"xp4_02bz51","count":1,"census":0,"soup":"lrh_b36s034678_1020_117607","cells":[[4,8],[5,8],[5,9],[7,8],[8,7],[9,7],[9,8],[11,7]],"verdict":"strict","how":"exhaustive"},{"code":"xp4_elvle","count":2,"census":0,"soup":"lrh_b36s034678_1020_300963","cells":[[3,11],[4,10],[4,12],[5,11],[6,8],[6,11],[6,14],[7,7],[7,9],[7,10],[7,11],[7,12],[7,13],[7,15],[8,8],[8,11],[8,14],[9,11],[10,10],[10,12],[11,11]],"verdict":"strict","how":"partial"},{"code":"xp6_gkakb2z01","count":2,"census":0,"soup":"lrh_b36s034678_1020_160672","cells":[[12,8],[13,7],[13,9],[14,6],[14,8],[14,10],[15,5],[15,7],[15,9],[16,4],[16,6],[16,8],[17,3],[17,5],[17,7],[18,4],[18,6],[19,5]],"verdict":"strict","how":"exhaustive"},{"code":"xp14_173wso","count":4,"census":0,"soup":"lrh_b36s034678_1020_263880","cells":[[6,12],[7,11],[7,12],[8,11],[9,7],[9,11],[10,7],[10,8],[10,9],[11,7],[11,8]],"verdict":"strict","how":"exhaustive"},{"code":"xp3_f6666f","count":5,"census":0,"soup":"lrh_b36s034678_1020_61416","cells":[[3,-3],[3,-2],[4,-4],[4,-1],[5,-4],[5,-3],[5,-2],[5,-1],[8,-4],[8,-3],[8,-2],[8,-1],[9,-4],[9,-1],[10,-3],[10,-2]],"verdict":"strict","how":"exhaustive"},{"code":"xp4_02bz15","count":5,"census":0,"soup":"lrh_b36s034678_1020_70718","cells":[[5,15],[6,15],[6,16],[8,15],[9,14],[10,14],[10,15],[12,15]],"verdict":"strict","how":"exhaustive"},{"code":"xp4_1302oe","count":11,"census":0,"soup":"lrh_b36s034678_1020_68151","cells":[[9,13],[9,15],[10,11],[10,12],[10,13],[11,9],[11,10],[12,10],[12,11],[13,10]],"verdict":"strict","how":"exhaustive"},{"code":"xp4_2311ao","count":11,"census":0,"soup":"lrh_b36s034678_1020_51051","cells":[[8,10],[9,9],[9,10],[10,10],[10,11],[11,9],[12,6],[12,8],[13,8]],"verdict":"strict","how":"exhaustive"},{"code":"xp4_gga3z2","count":11,"census":0,"soup":"lrh_b36s034678_1020_8292","cells":[[9,12],[10,11],[10,12],[12,11],[13,9],[13,10],[15,9]],"verdict":"strict","how":"exhaustive"},{"code":"xp4_g2bz36","count":12,"census":0,"soup":"lrh_b36s034678_1020_52547","cells":[[2,5],[3,3],[3,4],[3,5],[4,4],[4,6],[4,8],[4,10],[5,7],[5,8]],"verdict":"strict","how":"exhaustive"},{"code":"xp4_gs5z2","count":13,"census":0,"soup":"lrh_b36s034678_1020_137482","cells":[[10,7],[10,8],[11,3],[11,5],[11,7],[12,2],[12,3]],"verdict":"strict","how":"exhaustive"},{"code":"xp4_gt4z2","count":16,"census":0,"soup":"lrh_b36s034678_1020_17822","cells":[[-1,10],[0,8],[0,10],[0,11],[0,12],[1,12],[1,14]],"verdict":"strict","how":"exhaustive"},{"code":"xp4_6ff6","count":18,"census":0,"soup":"lrh_b36s034678_1020_90964","cells":[[8,5],[8,6],[8,7],[8,8],[9,5],[9,6],[9,7],[9,8],[10,5],[10,6],[10,7],[10,8],[11,5],[11,6],[11,7],[11,8]],"verdict":"strict","how":"exhaustive"},{"code":"xp4_gibz2","count":28,"census":0,"soup":"lrh_b36s034678_1020_20074","cells":[[17,14],[19,14],[19,15],[20,16],[22,15],[22,16],[23,16]],"verdict":"strict","how":"exhaustive"},{"code":"xp4_gjaz2","count":30,"census":0,"soup":"lrh_b36s034678_1020_13720","cells":[[-1,11],[0,10],[0,11],[2,10],[3,11],[3,12],[5,12]],"verdict":"strict","how":"exhaustive"},{"code":"xp4_irz2","count":43,"census":0,"soup":"lrh_b36s034678_1020_4044","cells":[[7,11],[9,11],[9,12],[10,12],[12,11],[12,12],[13,12]],"verdict":"strict","how":"exhaustive"},{"code":"xp12_6dvucozx11","count":73,"census":0,"soup":"lrh_b36s034678_1020_4396","cells":[[6,4],[7,3],[7,4],[7,5],[8,2],[8,4],[8,5],[8,6],[9,1],[9,2],[9,3],[9,5],[9,6],[9,7],[10,2],[10,3],[10,4],[10,6],[10,7],[10,8],[11,3],[11,4],[11,5],[11,7],[12,4],[12,5],[12,6],[13,5]],"verdict":"strict","how":"partial"},{"code":"xp3_hvvh","count":143,"census":0,"soup":"lrh_b36s034678_1020_3525","cells":[[5,12],[6,9],[6,10],[6,11],[6,13],[6,14],[6,15],[7,9],[7,10],[7,11],[7,13],[7,14],[7,15],[8,12]],"verdict":"strict","how":"exhaustive"},{"code":"xp4_6f6","count":8915,"census":0,"soup":"lrh_b36s034678_1020_34","cells":[[14,5],[14,6],[14,7],[14,8],[15,5],[15,6],[15,7],[15,8],[16,5],[16,6],[16,7],[16,8]],"verdict":"strict","how":"exhaustive"},{"code":"xp4_272","count":42403,"census":0,"soup":"lrh_b36s034678_1020_3","cells":[[6,5],[6,6],[6,7],[7,5],[7,6],[7,7],[8,5],[8,6],[8,7]],"verdict":"strict","how":"exhaustive"},{"code":"xp4_2b","count":45264,"census":0,"soup":"lrh_b36s034678_1020_0","cells":[[4,6],[5,6],[5,7],[7,7]],"verdict":"strict","how":"exhaustive"},{"code":"xp16_37","count":239516,"census":0,"soup":"lrh_b36s034678_1020_5","cells":[[4,8],[4,9],[4,10],[5,9],[5,10],[6,9]],"verdict":"strict","how":"exhaustive"},{"code":"xp2_gsvvsgz7vvvv7zw33","count":1,"census":0,"soup":"lrh_b36s034678_1020_342702","cells":[[4,7],[4,8],[5,7],[5,8],[6,6],[6,7],[6,8],[6,9],[7,6],[7,7],[7,8],[7,9],[8,5],[8,6],[8,7],[8,8],[8,9],[8,10],[9,4],[9,6],[9,7],[9,8],[9,9],[9,11],[10,4],[10,6],[10,7],[10,8],[10,9],[10,11],[11,5],[11,6],[11,7],[11,8],[11,9],[11,10],[12,6],[12,7],[12,8],[12,9],[13,6],[13,7],[13,8],[13,9],[14,7],[14,8],[15,7],[15,8]]},{"code":"xp2_0muunt28zdff771","count":1,"census":0,"soup":"lrh_b36s034678_1020_973356","cells":[[8,11],[9,13],[10,9],[10,10],[10,11],[10,12],[10,14],[11,7],[11,8],[11,9],[11,10],[11,12],[11,13],[11,14],[12,7],[12,8],[12,9],[12,10],[12,11],[12,12],[12,13],[13,6],[13,7],[13,8],[13,9],[13,10],[13,11],[13,12],[13,13],[14,6],[14,7],[14,8],[14,9],[14,10],[14,12],[14,13],[15,6],[15,7],[15,9]]},{"code":"xp2_0itvu6z673b2362","count":1,"census":0,"soup":"lrh_b36s034678_1020_439136","cells":[[1,10],[2,10],[2,11],[3,5],[3,6],[3,9],[3,10],[4,5],[4,6],[4,7],[4,8],[4,10],[5,4],[5,5],[5,6],[5,7],[5,8],[5,9],[5,10],[5,12],[6,4],[6,6],[6,7],[6,8],[6,9],[6,10],[7,5],[7,8],[7,9],[7,10],[7,11],[8,10],[8,11]]},{"code":"xp2_06uvrkz3373752","count":1,"census":0,"soup":"lrh_b36s034678_1020_511954","cells":[[4,1],[4,2],[4,4],[5,0],[5,2],[5,3],[5,4],[5,5],[5,6],[6,1],[6,2],[6,3],[6,4],[6,5],[6,6],[7,1],[7,2],[7,3],[7,4],[8,2],[8,3],[8,4],[9,1],[9,3],[9,4],[9,5],[10,2],[10,3],[10,4],[10,5],[11,2],[11,3]]},{"code":"xp2_mtvuvnz12133","count":1,"census":0,"soup":"lrh_b36s034678_1020_653751","cells":[[4,9],[5,8],[5,10],[5,12],[6,8],[6,9],[6,10],[6,11],[6,12],[6,13],[6,14],[7,9],[7,10],[7,11],[7,12],[7,13],[7,14],[8,8],[8,9],[8,10],[8,11],[8,12],[8,13],[9,8],[9,10],[9,11],[9,12],[9,13],[10,9],[10,10],[10,12],[10,13]]},{"code":"xp2_0mtutu6z25733","count":1,"census":0,"soup":"lrh_b36s034678_1020_370302","cells":[[8,12],[8,14],[9,11],[9,13],[9,15],[9,16],[10,11],[10,12],[10,13],[10,14],[10,15],[10,16],[11,12],[11,13],[11,14],[11,15],[12,12],[12,13],[12,14],[12,15],[12,16],[13,13],[13,14],[13,15],[13,17],[14,13],[14,14],[14,15],[14,16],[15,15],[15,16]]}],"recheck":null,"emitters":[]}],"demo_prefix":{"b368s238":"lrh_b368s238_1020_","b3578s1267":"lrh_b3578s1267_1020_","b36s034678":"lrh_b36s034678_1020_"},"demo_seeds":{"b368s238":[[0,"\uc218\ud504 #0"],[1,"\uc218\ud504 #1"],[2,"\uc218\ud504 #2"],[7,"\uc218\ud504 #7"],[42,"\uc218\ud504 #42"],["233344","\ubc29\ucd9c \ud6c4\ubcf4 #233344"],["755803","\ubc29\ucd9c \ud6c4\ubcf4 #755803"],["85065","\ubc29\ucd9c \ud6c4\ubcf4 #85065"],["676070","\ubc29\ucd9c \ud6c4\ubcf4 #676070"],["968213","\ubc29\ucd9c \ud6c4\ubcf4 #968213"]],"b3578s1267":[[0,"\uc218\ud504 #0"],[1,"\uc218\ud504 #1"],[2,"\uc218\ud504 #2"],[7,"\uc218\ud504 #7"],[42,"\uc218\ud504 #42"]],"b36s034678":[[0,"\uc218\ud504 #0"],[1,"\uc218\ud504 #1"],[2,"\uc218\ud504 #2"],[7,"\uc218\ud504 #7"],[42,"\uc218\ud504 #42"]]}};
+function parseRule(r) { const m = r.match(/b(\d*)s(\d*)/); return [new Set([...m[1]].map(Number)), new Set([...m[2]].map(Number))]; }
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const kindOf = c => c.startsWith('xq') ? ['우주선', 'ship'] : c.startsWith('xp') ? ['진동자', 'osc'] : c.startsWith('xs') ? ['정물', 'still'] : ['기타', ''];
+const periodOf = c => /^x[pq]/.test(c) ? +c.slice(2).split('_')[0] : 1;
+
+/* ---------- cell-set stepping for the cards ---------- */
+function stepSet(cells, [B, S]) {
+  const cnt = new Map(), live = new Set(cells.map(([x, y]) => x + ',' + y));
+  for (const [x, y] of cells) for (let dx = -1; dx <= 1; dx++) for (let dy = -1; dy <= 1; dy++)
+    if (dx || dy) { const k = (x + dx) + ',' + (y + dy); cnt.set(k, (cnt.get(k) || 0) + 1); }
+  const out = [];
+  for (const [k, n] of cnt) if (live.has(k) ? S.has(n) : B.has(n)) out.push(k.split(',').map(Number));
+  if (S.has(0)) for (const [x, y] of cells) if (!cnt.has(x + ',' + y)) out.push([x, y]);
+  return out;
+}
+
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+/* ---------- results ---------- */
+const anims = [];
+const res = document.getElementById('results');
+for (const run of DATA.runs) {
+  const head = document.createElement('div');
+  head.className = 'rule-head';
+  if (!run.soups) {
+    head.innerHTML = `<h3>${run.rule}</h3><span class="pending">검색 진행 중 · 끝나면 이 자리에 결과가 들어옵니다</span>`;
+    res.appendChild(head); continue;
+  }
+  const nNew = run.items.filter(i => i.census === 0).length;
+  head.innerHTML = `<h3>${run.rule}</h3><div class="stats">
+    <span>수프 <b>${run.soups.toLocaleString()}</b></span>
+    <span>물체 종류 <b>${run.distinct.toLocaleString()}</b></span>
+    <span>Catagolue에 없음 <b>${run.new_total.toLocaleString()}</b></span>
+    <span>우주선 종류 <b>${run.ship_kinds}</b></span>
+    <span>Catagolue 기존 기록 <b>${run.census_soups.toLocaleString()}</b> 수프</span>
+    <span>안정 안 됨 <b>${run.unstable.toLocaleString()}</b></span></div>`;
+  res.appendChild(head);
+  if (run.note) { const p = document.createElement('p'); p.className = 'note'; p.textContent = run.note; res.appendChild(p); }
+  const grid = document.createElement('div'); grid.className = 'grid'; res.appendChild(grid);
+  if (!run.items.length) { grid.innerHTML = '<p class="note">기록이 드문 물체가 없었습니다.</p>'; }
+  if (run.recheck) {
+    const box = document.createElement('div');
+    const k = run.recheck.kinds;
+    box.innerHTML = `<p class="note" style="margin-top:18px"><b>안정 안 된 수프 ${run.recheck.soups.toLocaleString()}개 재검사</b> (더 큰 판에서 다시 돌림):
+      정착 ${(k.settled || 0).toLocaleString()} · 계속 무언가를 내보냄 ${(k.emitter || 0).toLocaleString()} · 끝까지 안 멈춤 ${(k.unsettled || 0).toLocaleString()}.
+      정착한 수프에서는 기록이 드문 물체가 나오지 않았습니다.
+      ${run.recheck.catagolue_linear ? `물체를 내보내는 수프(퍼퍼·총)는 Catagolue도 이 규칙에서 <b>${run.recheck.catagolue_linear.toLocaleString()}번</b> "선형 성장"으로 기록해 둔 흔한 현상이라, 새 발견으로 치지 않습니다.` : ''}</p>` +
+      (run.emitters.length ? `<h3 style="margin-top:6px">구경거리: 일정한 간격으로 물체를 내보내는 수프</h3>
+      <p class="note">방출 간격별로 하나씩 골랐습니다. "데모에서 보기"를 누르면 위 시뮬레이션에 이 수프가 올라갑니다.</p>
+      <div class="emit">${run.emitters.map(e => `<div class="card"><div class="meta"><b>약 ${e.emit_period}세대마다</b> 방출 · 같은 간격 수프 ${e.n_same}개</div>
+        <div class="code">${e.soup}</div><div class="meta"><a href="https://catagolue.hatsya.com/hashsoup/C1/${e.soup}/${run.rule}" target="_blank" rel="noopener">원본 수프</a></div>
+        <button data-rule="${run.rule}" data-idx="${e.soup.split('_').pop()}">데모에서 보기</button></div>`).join('')}</div>` : '');
+    res.appendChild(box);
+    box.querySelectorAll('button[data-idx]').forEach(b => b.onclick = () => {
+      document.getElementById('demo-rule').value = b.dataset.rule; fillSeeds(b.dataset.idx);
+      resetDemo(); document.getElementById('soup').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
+    });
+  }
+  const rule = parseRule(run.rule);
+  for (const it of run.items) {
+    const [kname, kcls] = kindOf(it.code), p = periodOf(it.code);
+    const card = document.createElement('div');
+    card.className = 'card' + (it.census === 0 ? ' new' : '');
+    const link = `https://catagolue.hatsya.com/hashsoup/C1/${it.soup}/${run.rule}`;
+    const obj = `https://catagolue.hatsya.com/object/${it.code}/${run.rule}`;
+    card.innerHTML = `<canvas width="200" height="200"></canvas>
+      <div>${it.census === 0 ? '<span class="chip new">처음</span> ' : `<span class="chip">기록 ${it.census}회</span> `}${kcls === 'ship' ? '<span class="chip ship">우주선</span>' : ''}${it.verdict === 'strict' ? ' <span class="chip ok">단일 물체' + (it.how === 'partial' ? '(부분 검사)' : '') + '</span>' : ''}${it.recheck ? ' <span class="chip">큰 수프 재검사</span>' : ''}</div>
+      <div class="meta"><b>${kname}${p > 1 ? ' · 주기 ' + p : ''}</b> · ${it.cells.length}칸 · 이번 ${it.count}회</div>
+      <div class="code">${it.code}</div>
+      <div class="meta"><a href="${link}" target="_blank" rel="noopener">원본 수프</a> · <a href="${obj}" target="_blank" rel="noopener">Catagolue</a></div>`;
+    grid.appendChild(card);
+    const xs = it.cells.map(c => c[0]), ys = it.cells.map(c => c[1]);
+    anims.push({ canvas: card.querySelector('canvas'), cells: it.cells, start: it.cells, rule, ship: kcls === 'ship',
+      cx: (Math.min(...xs) + Math.max(...xs)) / 2, cy: (Math.min(...ys) + Math.max(...ys)) / 2,
+      span: Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys)) + 6, t: 0, p });
+  }
+}
+function drawCards() {
+  const ink = css('--cell'), shipInk = css('--ship');
+  for (const a of anims) {
+    const c = a.canvas, d = devicePixelRatio || 1, W = Math.round(c.clientWidth * d) || 200;
+    if (c.width !== W) { c.width = W; c.height = W; }
+    const g = c.getContext('2d'); g.clearRect(0, 0, W, W);
+    const s = W / Math.max(a.span, 10); g.fillStyle = a.ship ? shipInk : ink;
+    let ox = a.cx, oy = a.cy;
+    if (a.ship && a.cells.length) { const xs = a.cells.map(q => q[0]), ys = a.cells.map(q => q[1]);
+      ox = (Math.min(...xs) + Math.max(...xs)) / 2; oy = (Math.min(...ys) + Math.max(...ys)) / 2; }
+    const gap = s > 6 ? 1 : 0;
+    for (const [x, y] of a.cells) g.fillRect(W / 2 + (x - ox - 0.5) * s + gap, W / 2 + (y - oy - 0.5) * s + gap, s - 2 * gap, s - 2 * gap);
+  }
+}
+if (!reduce) setInterval(() => { for (const a of anims) { a.t++; a.cells = a.t % (a.p * 4) === 0 ? a.start : stepSet(a.cells, a.rule); if (!a.cells.length) a.cells = a.start; } drawCards(); }, 300);
+addEventListener('resize', drawCards); drawCards();
+
+/* ---------- live soup demo (same layout as soup.c / apgsearch C1 hashsoup) ---------- */
+const N = 200, C = N >> 1, R = 64;  // demo cuts at radius 64 (the engine uses 80 and checks the object is a ship)
+let grid = new Uint8Array(N * N), nxt = new Uint8Array(N * N), gen = 0, ejected = 0, timer = null, hist = new Map(), done = false, demoRule;
+const cv = document.getElementById('soup');
+function sha256js(bytes) {  // fallback where crypto.subtle is missing (non-https previews)
+  const K = [], H = [];
+  const isP = n => { for (let i = 2; i * i <= n; i++) if (n % i === 0) return false; return true; };
+  for (let n = 2, c = 0; c < 64; n++) if (isP(n)) { if (c < 8) H[c] = (Math.pow(n, 1 / 2) % 1) * 2 ** 32 | 0; K[c++] = (Math.pow(n, 1 / 3) % 1) * 2 ** 32 | 0; }
+  const l = bytes.length, m = new Uint8Array(((l + 9 + 63) >> 6) << 6);
+  m.set(bytes); m[l] = 0x80; const dv = new DataView(m.buffer); dv.setUint32(m.length - 4, l * 8);
+  const w = new Int32Array(64), rot = (x, n) => (x >>> n) | (x << (32 - n));
+  for (let o = 0; o < m.length; o += 64) {
+    for (let i = 0; i < 16; i++) w[i] = dv.getInt32(o + 4 * i);
+    for (let i = 16; i < 64; i++) {
+      const a = w[i - 15], b = w[i - 2];
+      w[i] = (w[i - 16] + (rot(a, 7) ^ rot(a, 18) ^ (a >>> 3)) + w[i - 7] + (rot(b, 17) ^ rot(b, 19) ^ (b >>> 10))) | 0;
+    }
+    let [a, b, c, d, e, f, g, h] = H;
+    for (let i = 0; i < 64; i++) {
+      const t1 = (h + (rot(e, 6) ^ rot(e, 11) ^ rot(e, 25)) + ((e & f) ^ (~e & g)) + K[i] + w[i]) | 0;
+      const t2 = ((rot(a, 2) ^ rot(a, 13) ^ rot(a, 22)) + ((a & b) ^ (a & c) ^ (b & c))) | 0;
+      h = g; g = f; f = e; e = (d + t1) | 0; d = c; c = b; b = a; a = (t1 + t2) | 0;
+    }
+    [a, b, c, d, e, f, g, h].forEach((v, i) => H[i] = (H[i] + v) | 0);
+  }
+  return H.map(v => (v >>> 0).toString(16).padStart(8, '0')).join('');
+}
+async function sha256hex(s) {
+  const bytes = new TextEncoder().encode(s);
+  if (window.crypto && crypto.subtle) {
+    try {
+      const buf = await crypto.subtle.digest('SHA-256', bytes);
+      return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('');
+    } catch (e) { /* fall through */ }
+  }
+  return sha256js(bytes);
+}
+function fillSeeds(pick) {
+  const rule = document.getElementById('demo-rule').value, sel = document.getElementById('demo-seed');
+  sel.innerHTML = DATA.demo_seeds[rule].map(([i, label]) => `<option value="${i}">${label}</option>`).join('');
+  if (pick !== undefined) sel.value = pick;
+}
+async function resetDemo() {
+  stop();
+  const rule = document.getElementById('demo-rule').value, idx = document.getElementById('demo-seed').value;
+  const seed = DATA.demo_prefix[rule] + idx;
+  demoRule = parseRule(rule);
+  grid.fill(0); gen = 0; ejected = 0; hist = new Map(); done = false;
+  const hex = await sha256hex(seed);
+  for (let j = 0; j < 32; j++) {
+    const v = parseInt(hex.slice(2 * j, 2 * j + 2), 16), y = j >> 1, xb = j % 2 ? 0 : 8;
+    for (let b = 0; b < 8; b++) if ((v >> b) & 1) grid[(C - 8 + y) * N + C - 8 + xb + b] = 1;
+  }
+  document.getElementById('r-seed').textContent = seed;
+  document.getElementById('r-link').href = `https://catagolue.hatsya.com/hashsoup/C1/${seed}/${rule}`;
+  document.getElementById('r-status').textContent = '재생을 누르세요.';
+  drawSoup(); readout();
+}
+function stepSoup() {
+  const [B, S] = demoRule; let pop = 0, h = 0;
+  nxt.fill(0);
+  for (let y = 1; y < N - 1; y++) for (let x = 1; x < N - 1; x++) {
+    const k = y * N + x;
+    const n = grid[k - N - 1] + grid[k - N] + grid[k - N + 1] + grid[k - 1] + grid[k + 1] + grid[k + N - 1] + grid[k + N] + grid[k + N + 1];
+    if (grid[k] ? S.has(n) : B.has(n)) {
+      const dx = x - C, dy = y - C;
+      if (dx * dx + dy * dy > R * R) { ejected++; continue; }  // flew away: cut out
+      nxt[k] = 1; pop++; h = (h + Math.imul(k, 2654435761)) >>> 0;
+    }
+  }
+  [grid, nxt] = [nxt, grid]; gen++;
+  const key = h + ':' + pop;
+  if (hist.has(key) && !done) {
+    const p = gen - hist.get(key);
+    done = true; stop();
+    document.getElementById('r-status').innerHTML = pop === 0 ? `${gen}세대에 모두 사라졌습니다.`
+      : `${gen}세대에 안정: 주기 <b>${p}</b>로 반복됩니다. 이 상태를 물체 단위로 나눠 이름(apgcode)을 붙이고 Catagolue와 비교합니다.`;
+  }
+  hist.set(key, gen);
+  if (gen > 6000 && !done) { done = true; stop(); document.getElementById('r-status').textContent = '6000세대 안에 안정되지 않았습니다. 실제 검색에서는 이런 수프를 따로 모아 둡니다.'; }
+  return pop;
+}
+function readout() {
+  let pop = 0; for (let i = 0; i < grid.length; i++) pop += grid[i];
+  document.getElementById('r-gen').textContent = gen;
+  document.getElementById('r-pop').textContent = pop;
+  document.getElementById('r-ship').textContent = ejected;
+}
+function drawSoup() {
+  const d = devicePixelRatio || 1, W = Math.round(cv.clientWidth * d) || 640;
+  if (cv.width !== W) { cv.width = W; cv.height = W; }
+  const g = cv.getContext('2d'), view = 2 * (R + 6), s = W / view, o = C - view / 2;
+  g.clearRect(0, 0, W, W);
+  g.strokeStyle = css('--mute'); g.setLineDash([4 * d, 5 * d]); g.lineWidth = d;
+  g.beginPath(); g.arc(W / 2, W / 2, R * s, 0, Math.PI * 2); g.stroke(); g.setLineDash([]);
+  g.strokeStyle = css('--rule'); g.strokeRect(W / 2 - 8 * s, W / 2 - 8 * s, 16 * s, 16 * s);
+  g.fillStyle = css('--cell');
+  for (let y = 0; y < view; y++) for (let x = 0; x < view; x++) if (grid[(y + o) * N + x + o]) g.fillRect(x * s, y * s, Math.max(1, s - 0.3), Math.max(1, s - 0.3));
+  g.fillStyle = css('--mute'); g.font = `${11 * d}px ${css('--f-mono')}`;
+  g.fillText('16×16 수프 자리', W / 2 - 8 * s, W / 2 - 8 * s - 4 * d);
+}
+function stop() { if (timer) clearInterval(timer); timer = null; document.getElementById('demo-play').textContent = '재생'; }
+document.getElementById('demo-play').onclick = () => {
+  if (timer) return stop();
+  if (done) return;
+  document.getElementById('demo-play').textContent = '멈춤';
+  document.getElementById('r-status').textContent = '돌리는 중… 같은 모양이 반복되는지 세대마다 확인합니다.';
+  timer = setInterval(() => { for (let i = 0; i < 2 && !done; i++) stepSoup(); drawSoup(); readout(); }, 40);
+};
+document.getElementById('demo-step').onclick = () => { if (!done) { stepSoup(); drawSoup(); readout(); } };
+document.getElementById('demo-reset').onclick = resetDemo;
+document.getElementById('demo-rule').onchange = () => { fillSeeds(); resetDemo(); };
+document.getElementById('demo-seed').onchange = resetDemo;
+addEventListener('resize', drawSoup);
+fillSeeds();
+resetDemo();
+</script>

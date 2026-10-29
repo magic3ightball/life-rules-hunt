@@ -1,0 +1,22 @@
+2000 soups, 2s22000 soups, 5s42000 soups, 13s62000 soups, 15s82000 soups, 18s102000 soups, 22s122000 soups, 26s142000 soups, 28s162000 soups, 31s182000 soups, 35s202000 soups, 38s222000 soups, 42s242000 soups, 45s262000 soups, 57s282000 soups, 57s302000 soups, 57s322000 soups, 57s342000 soups, 57s362000 soups, 58s382000 soups, 60s402000 soups, 62s422000 soups, 65s442000 soups, 74s462000 soups, 74s482000 soups, 74s502000 soups, 74s522000 soups, 75s542000 soups, 77s562000 soups, 79s582000 soups, 81s602000 soups, 86s622000 soups, 86s642000 soups, 87s662000 soups, 89s682000 soups, 91s702000 soups, 93s722000 soups, 95s742000 soups, 97s762000 soups, 99s782000 soups, 101s802000 soups, 103s822000 soups, 115s842000 soups, 115s862000 soups, 115s882000 soups, 115s902000 soups, 115s922000 soups, 115s942000 soups, 119s962000 soups, 119s982000 soups, 121s
+rule b3578s1267: 1000000 soups in 123s, 43 distinct objects
+most common: xs2_3×3811601, xs2_12×1279608, xp12_27×265706, xs3_124×208179, xs5_296×23844, xq6_369×7616
+
+RARE (census < 3) or UNSEEN:
+        census 2  xp12_3w29q  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_148165/b3578s1267
+        census 1  xp10_699996  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_104933/b3578s1267
+        census 1  xp2_248nme  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_123017/b3578s1267
+        census 2  xs8_215413  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_110235/b3578s1267
+        census 1  xs9_m1qz12  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_27476/b3578s1267
+            NEW?  xs9_06hcz32  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_164321/b3578s1267
+            NEW?  xs8_215a84  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_839823/b3578s1267
+            NEW?  xs7_0m1cz1  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_169614/b3578s1267
+            NEW?  xs10_21e0eg8  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_185016/b3578s1267
+            NEW?  xs10_0m1cz342  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_226872/b3578s1267
+        census 1  xs9_2154kg8  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_268705/b3578s1267
+        census 1  xs9_254kg84  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_270238/b3578s1267
+            NEW?  xp2_21f0f12  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_422923/b3578s1267
+            NEW?  xs10_21e0e12  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_731997/b3578s1267
+            NEW?  xs12_g0s0s16z12  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_810923/b3578s1267
+            NEW?  xs9_2154k8zx1  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_968761/b3578s1267
+saved ~/Claude_etc/life-rules-hunt/results/b3578s1267_lrh_b3578s1267_1020_.json

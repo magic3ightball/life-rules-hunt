@@ -1,0 +1,45 @@
+stage1 0/6000 10sstage1 200/6000 27sstage1 400/6000 46sstage1 600/6000 66sstage1 800/6000 85sstage1 1000/6000 117sstage1 1200/6000 146sstage1 1400/6000 172sstage1 1600/6000 196sstage1 1800/6000 224sstage1 2000/6000 261sstage1 2200/6000 282sstage1 2400/6000 309sstage1 2600/6000 332sstage1 2800/6000 359sstage1 3000/6000 381sstage1 3200/6000 409sstage1 3400/6000 445sstage1 3600/6000 470sstage1 3800/6000 506sstage1 4000/6000 548sstage1 4200/6000 580sstage1 4400/6000 618sstage1 4600/6000 650sstage1 4800/6000 679sstage1 5000/6000 714sstage1 5200/6000 732sstage1 5400/6000 761sstage1 5600/6000 785sstage1 5800/6000 808s
+stage1: 1667/6000 rules stable & non-trivial
+stage2 0/1667 833sstage2 50/1667 833sstage2 100/1667 834sstage2 150/1667 834sstage2 200/1667 839sstage2 250/1667 839sstage2 300/1667 839sstage2 350/1667 839sstage2 400/1667 839sstage2 450/1667 839sstage2 500/1667 1369sstage2 550/1667 1369sstage2 600/1667 1369sstage2 650/1667 1369sstage2 700/1667 1369sstage2 750/1667 1369sstage2 800/1667 1369sstage2 850/1667 1369sstage2 900/1667 1369sstage2 950/1667 1369sstage2 1000/1667 1369sstage2 1050/1667 1369sstage2 1100/1667 1369sstage2 1150/1667 1369sstage2 1200/1667 1369sstage2 1250/1667 1369sstage2 1300/1667 1369sstage2 1350/1667 1369sstage2 1400/1667 1369sstage2 1450/1667 1369sstage2 1500/1667 1369sstage2 1550/1667 1369sstage2 1600/1667 1369sstage2 1650/1667 1369s
+| # | rule | score | unstable | empty | p>2 ash | ships/soup | soups/s | mean gen | C1 soups on Catagolue |
+|---|---|---|---|---|---|---|---|---|---|
+| 1 | b45678s0125678 | 67.71 | 0% | 0% | 94% | 0.0 | 4898.3 | 59 | 0 (rule never censused) |
+| 2 | b4568s134567 | 60.55 | 0% | 0% | 82% | 0.0 | 4557.5 | 66 | 0 (rule never censused) |
+| 3 | b468s1234567 | 57.6 | 0% | 0% | 76% | 0.0 | 5050.0 | 32 | 0 (rule never censused) |
+| 4 | b458s0123457 | 57.51 | 0% | 0% | 100% | 0.0 | 399.2 | 391 | 0 (rule never censused) |
+| 5 | b567s034567 | 56.13 | 0% | 0% | 74% | 0.0 | 4672.4 | 41 | 0 (rule never censused) |
+| 6 | b47s01234568 | 54.98 | 1% | 0% | 92% | 0.0 | 1664.2 | 107 | 0 (rule never censused) |
+| 7 | b34578s67 | 54.21 | 0% | 0% | 77% | 0.0 | 2064.3 | 147 | 0 (rule never censused) |
+| 8 | b4567s134567 | 53.36 | 1% | 0% | 90% | 0.0 | 1431.5 | 144 | 0 (rule never censused) |
+| 9 | b458s14567 | 53.15 | 0% | 0% | 70% | 0.0 | 3936.9 | 56 | 0 (rule never censused) |
+| 10 | b68s1234568 | 53.12 | 0% | 0% | 68% | 0.0 | 5156.6 | 37 | 0 (rule never censused) |
+| 11 | b67s0123457 | 52.94 | 0% | 0% | 69% | 0.0 | 4288.2 | 30 | 0 (rule never censused) |
+| 12 | b568s0123468 | 52.56 | 0% | 0% | 66% | 0.0 | 5963.7 | 50 | 0 (rule never censused) |
+| 13 | b678s0123457 | 51.71 | 0% | 0% | 67% | 0.0 | 4177.1 | 31 | 0 (rule never censused) |
+| 14 | b468s34567 | 51.55 | 0% | 0% | 64% | 0.0 | 6197.3 | 33 | 0 (rule never censused) |
+| 15 | b56s23456 | 51.45 | 0% | 0% | 68% | 0.0 | 3404.1 | 64 | 0 (rule never censused) |
+| 16 | b468s034567 | 50.9 | 0% | 0% | 64% | 0.0 | 5240.3 | 35 | 0 (rule never censused) |
+| 17 | b67s1234578 | 50.87 | 0% | 0% | 63% | 0.0 | 6037.1 | 29 | 0 (rule never censused) |
+| 18 | b3458s57 | 50.81 | 0% | 1% | 68% | 0.0 | 2909.2 | 176 | 0 (rule never censused) |
+| 19 | b56s0123467 | 50.3 | 0% | 0% | 65% | 0.0 | 3878.1 | 72 | 0 (rule never censused) |
+| 20 | b678s012345 | 50.24 | 0% | 0% | 61% | 0.0 | 6940.6 | 15 | 0 (rule never censused) |
+| 21 | b457s0134567 | 50.13 | 0% | 0% | 61% | 0.0 | 6738.9 | 33 | 0 (rule never censused) |
+| 22 | b4578s34567 | 49.64 | 1% | 0% | 86% | 0.0 | 931.9 | 236 | 0 (rule never censused) |
+| 23 | b567s123468 | 49.13 | 0% | 0% | 64% | 0.0 | 3313.9 | 46 | 0 (rule never censused) |
+| 24 | b678s12345 | 48.64 | 0% | 0% | 59% | 0.0 | 6179.7 | 15 | 0 (rule never censused) |
+| 25 | b478s0234568 | 48.33 | 1% | 0% | 94% | 0.0 | 325.5 | 138 | 0 (rule never censused) |
+| 26 | b68s23456 | 46.19 | 0% | 0% | 57% | 0.0 | 4295.7 | 24 | 0 (rule never censused) |
+| 27 | b456s01234568 | 45.83 | 0% | 0% | 76% | 0.0 | 345.2 | 512 | 0 (rule never censused) |
+| 28 | b5678s123468 | 45.83 | 0% | 0% | 55% | 0.0 | 5360.5 | 49 | 0 (rule never censused) |
+| 29 | b467s12348 | 45.76 | 0% | 0% | 64% | 0.0 | 1385.7 | 365 | 0 (rule never censused) |
+| 30 | b68s0123456 | 45.34 | 0% | 0% | 56% | 0.0 | 3959.1 | 21 | 0 (rule never censused) |
+| 31 | b568s134568 | 44.44 | 0% | 0% | 55% | 0.0 | 3586.0 | 97 | 0 (rule never censused) |
+| 32 | b578s0123478 | 44.02 | 0% | 0% | 50% | 0.0 | 7391.0 | 31 | 0 (rule never censused) |
+| 33 | b68s123457 | 44.0 | 0% | 0% | 52% | 0.0 | 5180.0 | 20 | 0 (rule never censused) |
+| 34 | b568s02345 | 43.29 | 0% | 0% | 49% | 0.0 | 7080.1 | 39 | 0 (rule never censused) |
+| 35 | b45s123458 | 43.09 | 0% | 0% | 81% | 0.0 | 116.2 | 1433 | 0 (rule never censused) |
+| 36 | b347s03 | 42.72 | 0% | 0% | 49% | 0.0 | 5924.8 | 59 | 0 (rule never censused) |
+| 37 | b568s2345 | 42.53 | 0% | 0% | 49% | 0.0 | 5596.9 | 40 | 0 (rule never censused) |
+| 38 | b68s0123458 | 42.47 | 0% | 0% | 50% | 0.0 | 4595.8 | 23 | 0 (rule never censused) |
+| 39 | b56s01234 | 42.4 | 0% | 0% | 49% | 0.0 | 5374.3 | 21 | 0 (rule never censused) |
+| 40 | b367s235678 | 42.05 | 0% | 0% | 72% | 0.01 | 195.4 | 137 | 0 (rule never censused) |

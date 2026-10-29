@@ -1,0 +1,122 @@
+2000 soups, 2s22000 soups, 4s42000 soups, 5s/Library/Frameworks/Python.framework/Versions/3.14/lib/python3.14/multiprocessing/resource_tracker.py:396: UserWarning: resource_tracker: There appear to be 5 leaked semaphore objects to clean up at shutdown: {'/mp-yb_yme6k', '/mp-v8ahkcm3', '/mp-bajmfwyi', '/mp-9oftxvj4', '/mp-bqhcnqj6'}
+  warnings.warn(
+00 soups, 36s422000 soups, 37s442000 soups, 39s462000 soups, 40s482000 soups, 42s502000 soups, 43s522000 soups, 45s542000 soups, 47s562000 soups, 48s582000 soups, 51s602000 soups, 54s622000 soups, 56s642000 soups, 59s662000 soups, 61s682000 soups, 64s702000 soups, 66s722000 soups, 69s742000 soups, 73s762000 soups, 75s782000 soups, 77s802000 soups, 80s822000 soups, 85s842000 soups, 90s862000 soups, 93s882000 soups, 98s902000 soups, 103s922000 soups, 107s942000 soups, 109s962000 soups, 111s982000 soups, 115s
+rule b3578s1267: 1000000 soups in 119s, 163 distinct objects
+most common: xs2_3×3305817, xs2_12×1231105, xp12_27×265674, xs3_124×207551, xs4_116×131083, xs6_699×79006
+
+RARE (census < 3) or UNSEEN:
+        census 2  xp12_3w29q  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_148165/b3578s1267
+            NEW?  xs8_g88611z1  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_19874/b3578s1267
+            NEW?  xs7_1h826  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_19378/b3578s1267
+            NEW?  xs11_0ch606z121  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_87296/b3578s1267
+            NEW?  xs8_0cga1z42  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_6935/b3578s1267
+        census 2  xs8_1248gk8  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_93770/b3578s1267
+        census 1  xs9_29mg6  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_23152/b3578s1267
+        census 1  xp10_699996  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_104933/b3578s1267
+        census 1  xp2_248nme  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_123017/b3578s1267
+            NEW?  xs8_21ga16  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_150004/b3578s1267
+            NEW?  xs7_24gp2  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_191270/b3578s1267
+        census 2  xs7_0g8413z1  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_239366/b3578s1267
+        census 1  xs8_wga16z21  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_13841/b3578s1267
+        census 2  xs8_215413  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_110235/b3578s1267
+            NEW?  xs8_11ga16  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_276396/b3578s1267
+        census 1  xs9_m1qz12  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_27476/b3578s1267
+        census 2  xs7_wg8421z21  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_53233/b3578s1267
+            NEW?  xs8_21lk2  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_68583/b3578s1267
+            NEW?  xs8_24gk803  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_148045/b3578s1267
+            NEW?  xs8_1agc22  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_2074/b3578s1267
+            NEW?  xs8_24512o  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_58870/b3578s1267
+            NEW?  xs12_g886116z122  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_102049/b3578s1267
+            NEW?  xs8_06hcz21  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_152960/b3578s1267
+            NEW?  xs9_06hcz32  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_164321/b3578s1267
+            NEW?  xs8_1h82a4  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_254144/b3578s1267
+            NEW?  xs8_21oi6  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_398114/b3578s1267
+            NEW?  xs8_11oi6  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_65679/b3578s1267
+            NEW?  xs9_2401h826  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_80420/b3578s1267
+            NEW?  xs8_01agcz42  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_82780/b3578s1267
+            NEW?  xs8_0g61agz1  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_106184/b3578s1267
+            NEW?  xs8_cga1z6  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_125729/b3578s1267
+            NEW?  xp12_gx61agz31  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_163279/b3578s1267
+            NEW?  xs8_1agczw6  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_281825/b3578s1267
+            NEW?  xs8_g25148z1  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_306095/b3578s1267
+        census 2  xs9_25124go  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_332518/b3578s1267
+            NEW?  xs10_1agczx606  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_361193/b3578s1267
+            NEW?  xs9_61h826  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_410590/b3578s1267
+            NEW?  xs9_25128a4  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_737138/b3578s1267
+            NEW?  xs8_215a84  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_839823/b3578s1267
+            NEW?  xs10_o4i152z01  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_17078/b3578s1267
+            NEW?  xs8_128a4042  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_19405/b3578s1267
+            NEW?  xs14_0g055z881452z11  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_32898/b3578s1267
+            NEW?  xs8_cga1z42  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_66130/b3578s1267
+            NEW?  xs9_24gk8124  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_88933/b3578s1267
+            NEW?  xs11_842012z61ag  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_116325/b3578s1267
+            NEW?  xs9_308kg4c  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_116891/b3578s1267
+            NEW?  xs8_42h826  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_153582/b3578s1267
+            NEW?  xs7_0m1cz1  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_169614/b3578s1267
+            NEW?  xs10_21e0eg8  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_185016/b3578s1267
+            NEW?  xs11_i5148a4z01  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_218464/b3578s1267
+            NEW?  xs10_24gk8055  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_221938/b3578s1267
+            NEW?  xs10_0m1cz342  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_226872/b3578s1267
+            NEW?  xs12_6h16z683  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_254549/b3578s1267
+        census 1  xs9_2154kg8  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_268705/b3578s1267
+            NEW?  xs9_2512452  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_268721/b3578s1267
+        census 1  xs9_254kg84  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_270238/b3578s1267
+            NEW?  xs10_02k0o3z6w1  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_291315/b3578s1267
+            NEW?  xs11_0gwi96z1221  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_292757/b3578s1267
+        census 1  xs8_wg8413z21  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_308417/b3578s1267
+            NEW?  xs10_2480gh28c  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_312962/b3578s1267
+            NEW?  xs10_0p2cz243  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_321116/b3578s1267
+            NEW?  xs9_128a512  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_321419/b3578s1267
+            NEW?  xs11_w25hk8z421  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_344886/b3578s1267
+            NEW?  xs9_1248gzy11248  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_368609/b3578s1267
+            NEW?  xs11_0gh28cz344  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_385070/b3578s1267
+            NEW?  xs10_gg1agcz22  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_417841/b3578s1267
+            NEW?  xp2_21f0f12  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_422923/b3578s1267
+            NEW?  xs12_xgg1agczaa  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_440111/b3578s1267
+            NEW?  xs9_421ga16  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_463898/b3578s1267
+            NEW?  xs9_4i1z3058  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_483664/b3578s1267
+            NEW?  xs9_110qh6  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_501791/b3578s1267
+            NEW?  xs8_1agcz24  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_510830/b3578s1267
+            NEW?  xs8_0c2pz21  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_510960/b3578s1267
+            NEW?  xs10_0124goz611  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_517218/b3578s1267
+            NEW?  xs12_01agcziic  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_532850/b3578s1267
+            NEW?  xs9_69izx124  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_547023/b3578s1267
+            NEW?  xs10_21lk2c  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_569329/b3578s1267
+            NEW?  xs8_0ch6z6  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_583957/b3578s1267
+            NEW?  xs8_cga1z24  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_584834/b3578s1267
+            NEW?  xs10_c01agcz022  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_589463/b3578s1267
+            NEW?  xs9_wg1agcz21  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_600413/b3578s1267
+            NEW?  xs13_606hczx121048  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_606339/b3578s1267
+            NEW?  xs9_42h82a4  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_620992/b3578s1267
+            NEW?  xs10_6061agc  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_649433/b3578s1267
+            NEW?  xs8_124gp2  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_665205/b3578s1267
+            NEW?  xs8_1agcz6  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_673261/b3578s1267
+            NEW?  xs11_124gk80303  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_681355/b3578s1267
+            NEW?  xs10_21e0e12  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_731997/b3578s1267
+            NEW?  xs12_061agcz55  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_732356/b3578s1267
+            NEW?  xs8_12og4c  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_735794/b3578s1267
+            NEW?  xs10_303og4c  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_748273/b3578s1267
+        census 1  xp12_27zx232  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_753338/b3578s1267
+            NEW?  xs8_w1agcz21  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_755790/b3578s1267
+            NEW?  xs9_42184ozw21  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_757804/b3578s1267
+            NEW?  xs9_21eg842  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_767389/b3578s1267
+            NEW?  xs14_4a95kia4  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_770998/b3578s1267
+            NEW?  xs10_12084oz8421  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_772042/b3578s1267
+            NEW?  xs9_2kl124  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_775960/b3578s1267
+            NEW?  xs9_24go303  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_794352/b3578s1267
+            NEW?  xs13_0h24gk8z3058  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_797139/b3578s1267
+            NEW?  xs12_g0s0s16z12  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_810923/b3578s1267
+            NEW?  xs9_wg39cz21  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_836349/b3578s1267
+            NEW?  xs10_2154k803  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_848291/b3578s1267
+            NEW?  xs12_c01h826z032  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_862112/b3578s1267
+            NEW?  xs8_01agcz3  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_867388/b3578s1267
+            NEW?  xs10_0g61agz121  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_879004/b3578s1267
+            NEW?  xs9_124gk812  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_898857/b3578s1267
+            NEW?  xs9_0c2pz421  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_934782/b3578s1267
+            NEW?  xs10_2kl12o  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_945071/b3578s1267
+            NEW?  xs10_0g4k80j8z1  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_951278/b3578s1267
+            NEW?  xs8_2h82a4  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_957925/b3578s1267
+            NEW?  xs7_12og42  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_958157/b3578s1267
+            NEW?  xs9_2154k8zx1  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_968761/b3578s1267
+            NEW?  xs10_1agcz42g8  https://catagolue.hatsya.com/hashsoup/C1/lrh_b3578s1267_1020_993602/b3578s1267
+saved ~/Claude_etc/life-rules-hunt/results/b3578s1267_lrh_b3578s1267_1020_.json
